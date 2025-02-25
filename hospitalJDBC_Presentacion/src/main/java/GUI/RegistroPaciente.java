@@ -34,9 +34,9 @@ import javax.swing.JTextField;
  */
 public class RegistroPaciente extends JFrame {
 
-    private JLabel lblNombre, lblApellidoPaterno, lblApellidoMaterno, lblFechaNacimiento, lblEdad, lblTelefono, lblCorreo, lblContrasena;
+    private JLabel lblNombre, lblApellidoPaterno, lblApellidoMaterno, lblFechaNacimiento, lblTelefono, lblCorreo, lblContrasena;
     private JLabel lblCalle, lblNumExt, lblColonia;
-    private JTextField txtNombre, txtApellidoPaterno, txtApellidoMaterno, txtFechaNacimiento, txtEdad, txtTelefono, txtCorreo;
+    private JTextField txtNombre, txtApellidoPaterno, txtApellidoMaterno, txtFechaNacimiento, txtTelefono, txtCorreo;
     private JTextField txtCalle, txtNumExt, txtColonia;
     private JPasswordField contrasenaField;
     private JButton btnAceptar, btnCancelar;
@@ -57,54 +57,130 @@ public class RegistroPaciente extends JFrame {
 
     private void initComponents() {
         setTitle("Registro de Paciente");
-        setSize(450, 500);
+        setSize(500, 600);
         setLayout(null);
 
-        // (Mantiene la inicialización de componentes y posiciones)
+        // Etiquetas
+        lblNombre = new JLabel("Nombre:");
+        lblApellidoPaterno = new JLabel("Apellido Paterno:");
+        lblApellidoMaterno = new JLabel("Apellido Materno:");
+        lblFechaNacimiento = new JLabel("Fecha de Nacimiento (YYYY-MM-DD):");
+        lblTelefono = new JLabel("Teléfono:");
+        lblCorreo = new JLabel("Correo Electrónico:");
+        lblContrasena = new JLabel("Contraseña:");
+        lblCalle = new JLabel("Calle:");
+        lblNumExt = new JLabel("Número Exterior:");
+        lblColonia = new JLabel("Colonia:");
+
+        // Campos de texto
+        txtNombre = new JTextField();
+        txtApellidoPaterno = new JTextField();
+        txtApellidoMaterno = new JTextField();
+        txtFechaNacimiento = new JTextField();
+        txtTelefono = new JTextField();
+        txtCorreo = new JTextField();
+        contrasenaField = new JPasswordField();
+        txtCalle = new JTextField();
+        txtNumExt = new JTextField();
+        txtColonia = new JTextField();
+
+        // Botones
+        btnAceptar = new JButton("Aceptar");
+        btnCancelar = new JButton("Cancelar");
+
+        // Posiciones en el frame
+        int y = 50;
+        int espacio = 40;
+        lblNombre.setBounds(50, y, 150, 20);
+        txtNombre.setBounds(220, y, 200, 20);
+        y += espacio;
+        lblApellidoPaterno.setBounds(50, y, 150, 20);
+        txtApellidoPaterno.setBounds(220, y, 200, 20);
+        y += espacio;
+        lblApellidoMaterno.setBounds(50, y, 150, 20);
+        txtApellidoMaterno.setBounds(220, y, 200, 20);
+        y += espacio;
+        lblFechaNacimiento.setBounds(50, y, 200, 20);
+        txtFechaNacimiento.setBounds(270, y, 150, 20);
+        y += espacio;
+        lblTelefono.setBounds(50, y, 150, 20);
+        txtTelefono.setBounds(220, y, 200, 20);
+        y += espacio;
+        lblCorreo.setBounds(50, y, 150, 20);
+        txtCorreo.setBounds(220, y, 200, 20);
+        y += espacio;
+        lblContrasena.setBounds(50, y, 150, 20);
+        contrasenaField.setBounds(220, y, 200, 20);
+        y += espacio;
+        lblCalle.setBounds(50, y, 150, 20);
+        txtCalle.setBounds(220, y, 200, 20);
+        y += espacio;
+        lblNumExt.setBounds(50, y, 150, 20);
+        txtNumExt.setBounds(220, y, 200, 20);
+        y += espacio;
+        lblColonia.setBounds(50, y, 150, 20);
+        txtColonia.setBounds(220, y, 200, 20);
+        y += espacio;
+
+        btnAceptar.setBounds(100, y, 100, 30);
+        btnCancelar.setBounds(250, y, 100, 30);
+
+        // Agregar al frame
+        this.add(lblNombre);
+        this.add(txtNombre);
+        this.add(lblApellidoPaterno);
+        this.add(txtApellidoPaterno);
+        this.add(lblApellidoMaterno);
+        this.add(txtApellidoMaterno);
+        this.add(lblFechaNacimiento);
+        this.add(txtFechaNacimiento);
+        this.add(lblTelefono);
+        this.add(txtTelefono);
+        this.add(lblCorreo);
+        this.add(txtCorreo);
+        this.add(lblContrasena);
+        this.add(contrasenaField);
+        this.add(lblCalle);
+        this.add(txtCalle);
+        this.add(lblNumExt);
+        this.add(txtNumExt);
+        this.add(lblColonia);
+        this.add(txtColonia);
+        this.add(btnAceptar);
+        this.add(btnCancelar);
+
         // Eventos de botones
-        btnAceptar.addActionListener(e -> registrarPaciente());
-        btnCancelar.addActionListener(e -> limpiarCampos());
-    }
-
-    private void registrarPaciente() {
-        if (validarCampos()) {
+        btnAceptar.addActionListener(e -> {
             try {
-                // Verificar si el correo ya está registrado
-                if (usuarioBO.existeCorreo(txtCorreo.getText())) {
-                    JOptionPane.showMessageDialog(this, "El correo ya está registrado. Usa otro.", "Error", JOptionPane.ERROR_MESSAGE);
-                    return;
-                }
-
                 UsuarioDTO usuarioDTO = new UsuarioDTO(0, txtNombre.getText(), txtApellidoPaterno.getText(), txtApellidoMaterno.getText(), new String(contrasenaField.getPassword()));
-                usuarioDTO = usuarioBO.crearUsuario(usuarioDTO);
+                usuarioDTO = usuarioBO.crearUsuario(usuarioDTO); // Registrar usuario y recuperar su ID
 
                 if (usuarioDTO.getId_Usuario() > 0) {
-                    PacienteDTO pacienteDTO = new PacienteDTO(0, LocalDate.parse(txtFechaNacimiento.getText()), Integer.parseInt(txtEdad.getText()), txtTelefono.getText(), txtCorreo.getText(), usuarioDTO);
-                    boolean pacienteCreado = pacienteBO.registrarPaciente(pacienteDTO);
+                    PacienteDTO pacienteDTO = new PacienteDTO(0, LocalDate.parse(txtFechaNacimiento.getText()), 0, txtTelefono.getText(), txtCorreo.getText(), usuarioDTO);
+                    boolean registrado = pacienteBO.registrarPaciente(pacienteDTO);
 
-                    if (pacienteCreado) {
-                        DireccionPacienteDTO direccionDTO = new DireccionPacienteDTO(0, txtCalle.getText(), txtNumExt.getText(), txtColonia.getText(), pacienteDTO);
-                        direccionBO.registrarDireccion(direccionDTO);
-
-                        JOptionPane.showMessageDialog(this, "Registro exitoso");
+                    if (registrado) {
+                        JOptionPane.showMessageDialog(this, "Registro exitoso.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
                         dispose();
                         menuFrame.setVisible(true);
+                    } else {
+                        JOptionPane.showMessageDialog(this, "No se pudo registrar el paciente.", "Error", JOptionPane.ERROR_MESSAGE);
                     }
                 } else {
-                    JOptionPane.showMessageDialog(this, "Error al crear el usuario", "Error", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(this, "Error al crear el usuario.", "Error", JOptionPane.ERROR_MESSAGE);
                 }
-            } catch (NegocioException ex) {
+            } catch (NegocioException | DateTimeParseException ex) {
                 JOptionPane.showMessageDialog(this, "Error: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
             }
-        }
-    }
+        });
 
+    
+    }
     private void limpiarCampos() {
         txtNombre.setText("");
         txtApellidoPaterno.setText("");
         txtApellidoMaterno.setText("");
         txtFechaNacimiento.setText("");
-        txtEdad.setText("");
         txtTelefono.setText("");
         txtCorreo.setText("");
         contrasenaField.setText("");
@@ -112,23 +188,4 @@ public class RegistroPaciente extends JFrame {
         txtNumExt.setText("");
         txtColonia.setText("");
     }
-
-    private boolean validarCampos() {
-        if (txtNombre.getText().trim().isEmpty()
-                || txtApellidoPaterno.getText().trim().isEmpty()
-                || txtFechaNacimiento.getText().trim().isEmpty()
-                || txtEdad.getText().trim().isEmpty()
-                || txtTelefono.getText().trim().isEmpty()
-                || txtCorreo.getText().trim().isEmpty()
-                || new String(contrasenaField.getPassword()).trim().isEmpty()
-                || txtCalle.getText().trim().isEmpty()
-                || txtNumExt.getText().trim().isEmpty()
-                || txtColonia.getText().trim().isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Todos los campos son obligatorios.", "Error", JOptionPane.ERROR_MESSAGE);
-            return false;
-        }
-
-        return true;
-    }
-
 }
