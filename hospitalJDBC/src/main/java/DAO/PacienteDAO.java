@@ -18,8 +18,6 @@ import java.sql.Statement;
  *
  * @author isaac
  */
-
-
 public class PacienteDAO implements IPacienteDAO {
 
     private final IConexion conexion;
@@ -32,8 +30,7 @@ public class PacienteDAO implements IPacienteDAO {
     public boolean registrarPaciente(Paciente paciente) throws PersistenciaExcption {
         String consultaSQL = "INSERT INTO pacientes (fecha_nacimiento, edad, telefono, correoE, id_Usuario) VALUES (?, ?, ?, ?, ?)";
 
-        try (Connection cone = this.conexion.crearConexion();
-             PreparedStatement ps = cone.prepareStatement(consultaSQL, Statement.RETURN_GENERATED_KEYS)) {
+        try (Connection cone = this.conexion.crearConexion(); PreparedStatement ps = cone.prepareStatement(consultaSQL, Statement.RETURN_GENERATED_KEYS)) {
 
             ps.setDate(1, java.sql.Date.valueOf(paciente.getFecha_nacimiento()));
             ps.setInt(2, paciente.getEdad());
@@ -63,20 +60,22 @@ public class PacienteDAO implements IPacienteDAO {
 
     @Override
     public Paciente buscarPacientePorCorreoyContra(String correo, String contra) throws PersistenciaExcption {
-        String consultaSQL = "SELECT p.*, u.id_Usuario, u.contra, u.nombre, u.apellidoP, u.apellidoM "
+        String consultaSQL = "SELECT p.id_Paciente, p.fecha_nacimiento, p.edad, p.telefono, p.correoE, "
+                + "u.id_Usuario, u.nombre, u.apellidoP, u.apellidoM, u.contra "
                 + "FROM pacientes p "
                 + "INNER JOIN usuarios u ON p.id_Usuario = u.id_Usuario "
                 + "WHERE p.correoE = ? AND u.contra = ?";
 
-        try (Connection cone = this.conexion.crearConexion();
-             PreparedStatement ps = cone.prepareStatement(consultaSQL)) {
+        try (Connection cone = this.conexion.crearConexion(); PreparedStatement ps = cone.prepareStatement(consultaSQL)) {
 
             ps.setString(1, correo);
             ps.setString(2, contra);
 
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
-                    // Crear la entidad Usuario con todos sus atributos
+                   
+
+                    // Crear la entidad Usuario con el orden correcto
                     Usuario usuario = new Usuario(
                             rs.getInt("id_Usuario"),
                             rs.getString("contra"),
@@ -85,6 +84,7 @@ public class PacienteDAO implements IPacienteDAO {
                             rs.getString("apellidoM")
                     );
 
+                    
                     // Crear la entidad Paciente con la referencia al Usuario
                     return new Paciente(
                             rs.getInt("id_Paciente"),
@@ -102,7 +102,39 @@ public class PacienteDAO implements IPacienteDAO {
 
         return null;
     }
-    
-    
-}
 
+    @Override
+    public boolean actualizarPaciente(Paciente paciente) throws PersistenciaExcption {
+        String consultaSQL = "UPDATE pacientes SET telefono = ?, correoE = ? WHERE id_Paciente = ?";
+        String consultaUsuarioSQL = "UPDATE usuarios SET nombre = ?, apellidoP = ?, apellidoM = ? WHERE id_Usuario = ?";
+
+        try (Connection cone = this.conexion.crearConexion()) {
+            // Actualizar la información del usuario
+            try (PreparedStatement psUsuario = cone.prepareStatement(consultaUsuarioSQL)) {
+                psUsuario.setString(1, paciente.getUsuario().getNombre());
+                psUsuario.setString(2, paciente.getUsuario().getApellidoP());
+                psUsuario.setString(3, paciente.getUsuario().getApellidoM());
+                psUsuario.setInt(4, paciente.getUsuario().getId_Usuario());
+
+                int usuarioActualizado = psUsuario.executeUpdate();
+                if (usuarioActualizado == 0) {
+                    throw new PersistenciaExcption("No se pudo actualizar la información del usuario.");
+                }
+            }
+
+            // Actualizar la información del paciente
+            try (PreparedStatement psPaciente = cone.prepareStatement(consultaSQL)) {
+                psPaciente.setString(1, paciente.getTelefono());
+                psPaciente.setString(2, paciente.getCorreoE());
+                psPaciente.setInt(3, paciente.getId_Paciente());
+
+                int pacienteActualizado = psPaciente.executeUpdate();
+                return pacienteActualizado > 0;
+            }
+
+        } catch (SQLException e) {
+            throw new PersistenciaExcption("Error al actualizar el paciente: " + e.getMessage(), e);
+        }
+    }
+
+}

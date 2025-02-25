@@ -24,7 +24,7 @@ public class Mapper {
                 citaDTO.getFecha_hora(),
                 toEntity(citaDTO.getPaciente()),
                 toEntity(citaDTO.getMedico()),
-                citaDTO.getTipo() 
+                citaDTO.getTipo()
         );
     }
 
@@ -39,21 +39,21 @@ public class Mapper {
                 pacienteDTO.getEdad(),
                 pacienteDTO.getTelefono(),
                 pacienteDTO.getCorreoE(),
-                toEntity(pacienteDTO.getUsuario()) // ✅ Ahora obtenemos el usuario
+                toEntity(pacienteDTO.getUsuario())
         );
     }
 
-    public static Usuario toEntity(UsuarioDTO usuarioDTO) {
+    public static Usuario toEntity(UsuarioDTO usuarioDTO) { // ACOMODAR 
         if (usuarioDTO == null) {
             return null;
         }
 
         return new Usuario(
                 usuarioDTO.getId_Usuario(),
-                usuarioDTO.getNombre(),
-                usuarioDTO.getApellidoP(),
-                usuarioDTO.getApellidoM(),
-                usuarioDTO.getContra()
+                usuarioDTO.getContra(), // Correcto: contraseña
+                usuarioDTO.getNombre(), // Correcto: nombre
+                usuarioDTO.getApellidoP(), // Correcto: apellido paterno
+                usuarioDTO.getApellidoM() // Correcto: apellido materno
         );
     }
 
@@ -66,7 +66,7 @@ public class Mapper {
                 medicoDTO.getId_Medico(),
                 medicoDTO.getCedulaPro(),
                 medicoDTO.getEspecialidad(),
-                toEntity(medicoDTO.getHorario()), // ✅ Convertir HorarioDTO a Horario
+                toEntity(medicoDTO.getHorario()),
                 toEntity(medicoDTO.getUsuario())
         );
     }
@@ -105,13 +105,27 @@ public class Mapper {
             return null;
         }
 
-        return new UsuarioDTO(
+        
+
+        // mismo orden 
+        UsuarioDTO dto = new UsuarioDTO(
                 usuario.getId_Usuario(),
-                usuario.getNombre(),
+                usuario.getContra(), // Verifica que estos estén en el orden correcto
+                usuario.getNombre(), // según tu constructor de UsuarioDTO
                 usuario.getApellidoP(),
-                usuario.getApellidoM(),
-                usuario.getContra()
+                usuario.getApellidoM()
         );
+
+        // Depuración para confirmar
+        System.out.println("=== UsuarioDTO creado ===");
+        System.out.println("ID: " + dto.getId_Usuario());
+        System.out.println("Nombre: " + dto.getNombre());
+        System.out.println("ApellidoP: " + dto.getApellidoP());
+        System.out.println("ApellidoM: " + dto.getApellidoM());
+        System.out.println("Contra: " + dto.getContra());
+        System.out.println("================================");
+
+        return dto;
     }
 
     public static Horario toEntity(HorarioDTO horarioDTO) {
@@ -177,10 +191,10 @@ public class Mapper {
                 direccionDTO.getCalle(),
                 direccionDTO.getNumExt(),
                 direccionDTO.getColonia(),
-                direccionDTO.getPaciente()!= null ? Mapper.toEntity(direccionDTO.getPaciente()) : null
+                direccionDTO.getPaciente() != null ? Mapper.toEntity(direccionDTO.getPaciente()) : null
         );
     }
-        
+
     public static DireccionPacienteDTO toDTO(DireccionPaciente direccion) {
         if (direccion == null) {
             return null;
@@ -190,8 +204,7 @@ public class Mapper {
                 direccion.getCalle(),
                 direccion.getNumExt(),
                 direccion.getColonia(),
-                direccion.getPaciente()!= null ? Mapper.toDTO((Paciente) direccion.getPaciente()) : null
-
+                direccion.getPaciente() != null ? Mapper.toDTO((Paciente) direccion.getPaciente()) : null
         );
     }
 }

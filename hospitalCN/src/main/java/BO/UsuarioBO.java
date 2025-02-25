@@ -53,11 +53,12 @@ public class UsuarioBO {
         try {
             Usuario usuario = new Usuario(
                     usuarioDTO.getId_Usuario(),
-                    usuarioDTO.getNombre(),
-                    usuarioDTO.getApellidoP(),
-                    usuarioDTO.getApellidoM(),
-                    usuarioDTO.getContra()
+                    usuarioDTO.getContra(), // Correcto: contraseña
+                    usuarioDTO.getNombre(), // Correcto: nombre
+                    usuarioDTO.getApellidoP(), // Correcto: apellido paterno
+                    usuarioDTO.getApellidoM() // Correcto: apellido materno
             );
+
             boolean creado = usuarioDAO.crearUsuario(usuario);
             if (creado) {
                 usuarioDTO.setId_Usuario(usuario.getId_Usuario()); // Asignar el ID generado
@@ -69,13 +70,13 @@ public class UsuarioBO {
             throw new NegocioException("Error al crear usuario: " + e.getMessage(), e);
         }
     }
-    
+
     public boolean existeCorreo(String correo) throws NegocioException {
-    try {
-        return usuarioDAO.existeCorreo(correo);
-    } catch (PersistenciaExcption e) {
-        throw new NegocioException("Error al verificar el correo: " + e.getMessage(), e);
+        try {
+            return usuarioDAO.existeCorreo(correo);
+        } catch (PersistenciaExcption e) {
+            throw new NegocioException("Error al verificar el correo: " + e.getMessage(), e);
+        }
     }
-}
 
 }

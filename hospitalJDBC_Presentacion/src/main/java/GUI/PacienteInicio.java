@@ -95,7 +95,7 @@ public class PacienteInicio extends JFrame {
             if (pacienteDTO != null) {
                 JOptionPane.showMessageDialog(this, "Inicio de sesión exitoso como paciente.");
                 dispose();
-                new PacienteMenu(pacienteDTO, menuFrame).setVisible(true); 
+                new PacienteMenu(pacienteDTO, pacienteBO, direccionBO, menuFrame).setVisible(true); 
             } else {
                 JOptionPane.showMessageDialog(this, "Credenciales incorrectas.", "Error", JOptionPane.ERROR_MESSAGE);
             }

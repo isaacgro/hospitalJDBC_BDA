@@ -50,14 +50,15 @@ public class UsuarioDAO implements IUsuarioDAO {
 
     @Override
     public boolean crearUsuario(Usuario usuario) throws PersistenciaExcption {
-        String consultaSQL = "INSERT INTO usuarios (nombre, apellidoP, apellidoM, contra) VALUES (?, ?, ?, ?)";
+        String consultaSQL = "INSERT INTO usuarios (contra, nombre, apellidoP, apellidoM) VALUES (?, ?, ?, ?)";
 
         try (Connection cone = this.conexion.crearConexion(); PreparedStatement ps = cone.prepareStatement(consultaSQL, Statement.RETURN_GENERATED_KEYS)) {
-
-            ps.setString(1, usuario.getNombre());
-            ps.setString(2, usuario.getApellidoP());
-            ps.setString(3, usuario.getApellidoM());
-            ps.setString(4, usuario.getContra());
+            
+            ps.setString(1, usuario.getContra());
+            ps.setString(2, usuario.getNombre());
+            ps.setString(3, usuario.getApellidoP());
+            ps.setString(4, usuario.getApellidoM());
+           
 
             int resultado = ps.executeUpdate();
             if (resultado == 0) {

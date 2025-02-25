@@ -4,9 +4,14 @@
  */
 package GUI;
 
+import BO.DireccionPacienteBO;
+import BO.PacienteBO;
 import DTO.PacienteDTO;
+import Exception.NegocioException;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -26,8 +31,14 @@ public class PacienteMenu extends JFrame {
     private JButton btnEditarPerfil;
     private JButton btnRegresar;
     private final MenuFrame menuFrame;
+    private final PacienteBO pacienteBO;
+    private final DireccionPacienteBO direccionBO;
+    private final PacienteDTO pacienteDTO;
 
-    public PacienteMenu(PacienteDTO pacienteDTO, MenuFrame menuFrame) {
+    public PacienteMenu(PacienteDTO pacienteDTO, PacienteBO pacienteBO, DireccionPacienteBO direccionBO, MenuFrame menuFrame) {
+        this.pacienteDTO = pacienteDTO;
+        this.pacienteBO = pacienteBO;
+        this.direccionBO = direccionBO;
         this.menuFrame = menuFrame;
         initComponents();
         initializeComponents(pacienteDTO);
@@ -66,12 +77,23 @@ public class PacienteMenu extends JFrame {
 
         // Oyentes de Eventos
         btnRegresar.addActionListener(e -> regresarMenu());
+
+        btnEditarPerfil.addActionListener(e -> {
+            dispose();
+            try {
+                new EditarPerfilPaciente(pacienteBO, direccionBO, pacienteDTO, menuFrame).setVisible(true);
+            } catch (NegocioException ex) {
+                Logger.getLogger(PacienteMenu.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        });
     }
 
     private void initializeComponents(PacienteDTO pacienteDTO) {
         this.setLocationRelativeTo(null);
         this.setVisible(true);
 
+
+        
         lblNombreCompleto.setText(pacienteDTO.getUsuario().getNombre() + " "
                 + pacienteDTO.getUsuario().getApellidoP() + " "
                 + pacienteDTO.getUsuario().getApellidoM());

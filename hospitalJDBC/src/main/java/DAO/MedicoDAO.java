@@ -63,10 +63,10 @@ public class MedicoDAO implements IMedicoDAO {
                 if (rs.next()) {
                     Usuario usuario = new Usuario(
                             rs.getInt("id_Usuario"),
-                            rs.getString("contra"),
-                            rs.getString("nombre"),
-                            rs.getString("apellidoP"),
-                            rs.getString("apellidoM")
+                            rs.getString("contra"), 
+                            rs.getString("nombre"), 
+                            rs.getString("apellidoP"), 
+                            rs.getString("apellidoM") 
                     );
 
                     return new Medico(
@@ -74,7 +74,7 @@ public class MedicoDAO implements IMedicoDAO {
                             rs.getString("cedulaPro"),
                             rs.getString("especialidad"),
                             null,
-                            usuario // Ahora asignamos correctamente el usuario
+                            usuario
                     );
                 }
             }
@@ -83,6 +83,6 @@ public class MedicoDAO implements IMedicoDAO {
         }
 
         return null;
-
-    }
+    
+}
 }

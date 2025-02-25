@@ -47,4 +47,13 @@ public class PacienteBO {
             throw new NegocioException("Error al autenticar paciente: " + e.getMessage(), e);
         }
     }
+    public boolean actualizarPaciente(PacienteDTO pacienteDTO) throws NegocioException {
+        try {
+            Paciente paciente = Mapper.toEntity(pacienteDTO);
+            return pacienteDAO.actualizarPaciente(paciente);
+        } catch (PersistenciaExcption e) {
+            throw new NegocioException("Error al actualizar el paciente: " + e.getMessage(), e);
+        }
+    }
+
 }

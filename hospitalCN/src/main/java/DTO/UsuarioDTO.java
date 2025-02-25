@@ -22,7 +22,7 @@ public class UsuarioDTO {
         this.nombre = nombre;
         this.apellidoP = apellidoP;
         this.apellidoM = apellidoM;
-        System.out.println("Constructor de UsuarioDTO actualizado!");
+        
     }
 
     public void setId_Usuario(int id_Usuario) {

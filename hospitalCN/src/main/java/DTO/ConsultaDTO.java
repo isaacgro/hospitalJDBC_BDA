@@ -11,6 +11,7 @@ import java.time.LocalDate;
  * @author mmax2
  */
 public class ConsultaDTO {
+
     private int id_Consulta;
     private LocalDate fecha_hora;
     private String tratamiento;
@@ -22,16 +23,26 @@ public class ConsultaDTO {
         this.tratamiento = tratamiento;
         this.diagnostico = diagnostico;
     }
-    
-    public int getId_Consulta ()  {return id_Consulta;}
-    public LocalDate getFecha_hora  ()  {return fecha_hora;}
-    public String getTratamiento () {return tratamiento;}
-    public String getDiagnostico () {return diagnostico;}
+
+    public int getId_Consulta() {
+        return id_Consulta;
+    }
+
+    public LocalDate getFecha_hora() {
+        return fecha_hora;
+    }
+
+    public String getTratamiento() {
+        return tratamiento;
+    }
+
+    public String getDiagnostico() {
+        return diagnostico;
+    }
 
     @Override
     public String toString() {
         return "ConsultaDTO{" + "id_Consulta=" + id_Consulta + ", fecha_hora=" + fecha_hora + ", tratamiento=" + tratamiento + ", diagnostico=" + diagnostico + '}';
     }
-    
-    
+
 }

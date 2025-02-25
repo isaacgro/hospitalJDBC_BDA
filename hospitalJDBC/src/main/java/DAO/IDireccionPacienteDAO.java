@@ -5,6 +5,7 @@
 package DAO;
 
 import Entidades.DireccionPaciente;
+import Entidades.Paciente;
 import Excepciones.PersistenciaExcption;
 
 /**
@@ -14,5 +15,12 @@ import Excepciones.PersistenciaExcption;
 public interface IDireccionPacienteDAO {
     
     boolean registrarDireccion(DireccionPaciente direccion) throws PersistenciaExcption;
+    
+    DireccionPaciente obtenerDireccionPorPaciente(Paciente paciente) throws PersistenciaExcption;
+    
+    boolean actualizarDireccion(DireccionPaciente direccion) throws PersistenciaExcption;
+    
+            
+          
 }
 

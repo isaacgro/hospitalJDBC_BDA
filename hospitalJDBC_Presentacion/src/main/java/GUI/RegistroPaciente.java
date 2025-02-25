@@ -152,7 +152,14 @@ public class RegistroPaciente extends JFrame {
         // Eventos de botones
         btnAceptar.addActionListener(e -> {
             try {
-                UsuarioDTO usuarioDTO = new UsuarioDTO(0, txtNombre.getText(), txtApellidoPaterno.getText(), txtApellidoMaterno.getText(), new String(contrasenaField.getPassword()));
+                UsuarioDTO usuarioDTO = new UsuarioDTO( // CORREGIR ORDEN ANTES POR ESO SE PONIA MAL
+                        0, // ID generado automáticamente
+                        new String(contrasenaField.getPassword()), // Contraseña
+                        txtNombre.getText(), // Nombre
+                        txtApellidoPaterno.getText(), // Apellido Paterno
+                        txtApellidoMaterno.getText() // Apellido Materno
+                );
+
                 usuarioDTO = usuarioBO.crearUsuario(usuarioDTO); // Registrar usuario y recuperar su ID
 
                 if (usuarioDTO.getId_Usuario() > 0) {
@@ -174,8 +181,8 @@ public class RegistroPaciente extends JFrame {
             }
         });
 
-    
     }
+
     private void limpiarCampos() {
         txtNombre.setText("");
         txtApellidoPaterno.setText("");

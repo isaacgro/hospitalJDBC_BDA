@@ -16,7 +16,7 @@ public class Usuario {
     private String nombre;
     private String apellidoP;
     private String apellidoM;
-    
+
     /**
      * Constructor por omision que no permite crear un usuario sin parametros
      * especificos
@@ -30,6 +30,23 @@ public class Usuario {
         this.nombre = nombre;
         this.apellidoP = apellidoP;
         this.apellidoM = apellidoM;
+        
+    }
+
+    public int getId_Usuario() {
+        return id_Usuario;
+    }
+
+    public void setId_Usuario(int id_Usuario) {
+        this.id_Usuario = id_Usuario;
+    }
+
+    public String getContra() {
+        return contra;
+    }
+
+    public void setContra(String contra) {
+        this.contra = contra;
     }
 
     public String getNombre() {
@@ -56,74 +73,8 @@ public class Usuario {
         this.apellidoM = apellidoM;
     }
 
-    /**
-     * Constructor que nos permite crear un usuario con todos sus paramentros
-     *
-     * @param id_Usuario el id del usuario que se desea ingresar
-     * @param contra la password del usuario que se desea ingresar
-     * @param nombre el nombre del usuairo
-     * @param apellidoP apellido paterno del usuario
-     * @param apellidoM apellido materno del usuairo
-     */
-    
-
-    public int getId_Usuario() {
-        return id_Usuario;
-    }
-
-    /**
-     * Constructor que nos permite generar un usuario sin ingresar el id del
-     * mismo
-     *
-     * @param contra la password del usuario que se desea ingresar
-     */
-    public Usuario(String contra) {
-        this.contra = contra;
-    }
-
-    /**
-     * Establece el ID del usuario.
-     *
-     * @param id_Usuario Identificador único que se asignará al usuario.
-     */
-    public void setId_Usuario(int id_Usuario) {
-        this.id_Usuario = id_Usuario;
-    }
-
-    /**
-     * Obtiene la contraseña del usuario.
-     *
-     * @return contra Contraseña del usuario.
-     */
-    public String getContra() {
-        return contra;
-    }
-
-    /**
-     * Establece la contraseña del usuario.
-     *
-     * @param contra Nueva contraseña que se asignará al usuario.
-     */
-    public void setContra(String contra) {
-        this.contra = contra;
-    }
-
-    
-
-    
-
-   
-
-    /**
-     * Devuelve una representación en cadena del objeto Usuario.
-     *
-     * @return Cadena que representa al usuario con sus atributos.
-     */
     @Override
     public String toString() {
-        return "Usuario{"
-                + "id_Usuario=" + id_Usuario
-                + ", contra=" + contra;
+        return "Usuario{" + "id_Usuario=" + id_Usuario + ", contra=" + contra + ", nombre=" + nombre + ", apellidoP=" + apellidoP + ", apellidoM=" + apellidoM + '}';
     }
-
 }
