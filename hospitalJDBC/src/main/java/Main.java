@@ -85,4 +85,8 @@ public class Main {
             System.err.println(" Error al registrar la cita: " + e.getMessage());
         }
     }
+    
+    private static void panchito() {
+        System.out.println("panchito");
+    }
 }
