@@ -1,0 +1,15 @@
+BO\CitaBO.class
+DTO\UsuarioDTO.class
+DTO\DireccionPacienteDTO.class
+BO\DireccionPacienteBO.class
+BO\PacienteBO.class
+DTO\HorarioDTO.class
+DTO\MedicoDTO.class
+com\mycompany\hospitalcn\HospitalCN.class
+DTO\PacienteDTO.class
+Exception\NegocioException.class
+DTO\ConsultaDTO.class
+BO\UsuarioBO.class
+DTO\CitaDTO.class
+Mapper\Mapper.class
+BO\MedicoBO.class

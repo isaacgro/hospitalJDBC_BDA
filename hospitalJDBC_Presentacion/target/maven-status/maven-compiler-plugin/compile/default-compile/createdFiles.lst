@@ -1,0 +1,9 @@
+GUI\PacienteMenu.class
+GUI\PacienteInicio.class
+GUI\HistorialConsultaPaciente.class
+GUI\MedicoInicio.class
+GUI\MenuFrame.class
+GUI\CitasProximasPaciente.class
+GUI\RegistroPaciente.class
+GUI\EditarPerfilPaciente.class
+GUI\MedicoMenu.class
