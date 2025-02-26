@@ -2,6 +2,7 @@ BO\CitaBO.class
 DTO\UsuarioDTO.class
 DTO\DireccionPacienteDTO.class
 BO\DireccionPacienteBO.class
+BO\ConsultaBO.class
 BO\PacienteBO.class
 DTO\HorarioDTO.class
 DTO\MedicoDTO.class
