@@ -148,20 +148,20 @@ public class Mapper {
     }
 
     public static ConsultaDTO toDTO(Consulta consulta) {
-    if (consulta == null) {
-        return null;
+        if (consulta == null) {
+            return null;
+        }
+
+        // Usar el constructor vacío y luego establecer los valores
+        ConsultaDTO dto = new ConsultaDTO();
+        dto.setId_Consulta(consulta.getId_Consulta());
+        dto.setFecha_hora(consulta.getFecha_hora());
+        dto.setTratamiento(consulta.getTratamiento());
+        dto.setDiagnostico(consulta.getDiagnostico());
+
+        // No asignamos médico ni paciente aquí
+        return dto;
     }
-    
-    // Usar el constructor vacío y luego establecer los valores
-    ConsultaDTO dto = new ConsultaDTO();
-    dto.setId_Consulta(consulta.getId_Consulta());
-    dto.setFecha_hora(consulta.getFecha_hora());
-    dto.setTratamiento(consulta.getTratamiento());
-    dto.setDiagnostico(consulta.getDiagnostico());
-    
-    // No asignamos médico ni paciente aquí
-    return dto;
-}
 
     public static Consulta toEntity(ConsultaDTO consultaDTO) {
         if (consultaDTO == null) {
@@ -213,5 +213,30 @@ public class Mapper {
                 direccion.getColonia(),
                 direccion.getPaciente() != null ? Mapper.toDTO((Paciente) direccion.getPaciente()) : null
         );
+    }
+
+    public static CitaDTO toDTO(Cita cita) {
+        if (cita == null) {
+            return null;
+        }
+
+        // Crear el CitaDTO usando el constructor vacío y setters
+        CitaDTO dto = new CitaDTO();
+        dto.setId_Cita(cita.getId_Cita());
+        dto.setEstado(cita.getEstado());
+        dto.setFecha_hora(cita.getFecha_hora());
+        dto.setTipo(cita.getTipo());
+
+        // Convertir Paciente a PacienteDTO si existe
+        if (cita.getPaciente() != null) {
+            dto.setPaciente(Mapper.toDTO(cita.getPaciente()));
+        }
+
+        // Convertir Medico a MedicoDTO si existe
+        if (cita.getMedico() != null) {
+            dto.setMedico(Mapper.toDTO(cita.getMedico()));
+        }
+
+        return dto;
     }
 }

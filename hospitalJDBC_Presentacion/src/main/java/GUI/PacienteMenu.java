@@ -26,8 +26,9 @@ import javax.swing.JOptionPane;
  * @author isaac
  */
 public class PacienteMenu extends JFrame {
+
     private static final Logger LOGGER = Logger.getLogger(PacienteMenu.class.getName());
-    
+
     private JLabel lblBienvenido;
     private JLabel lblNombreCompleto;
     private JButton btnAgendarCita;
@@ -35,7 +36,7 @@ public class PacienteMenu extends JFrame {
     private JButton btnVerHistorial;
     private JButton btnEditarPerfil;
     private JButton btnRegresar;
-    
+
     private final MenuFrame menuFrame;
     private final PacienteBO pacienteBO;
     private final DireccionPacienteBO direccionBO;
@@ -43,13 +44,13 @@ public class PacienteMenu extends JFrame {
     // Nuevos campos
     private final CitaBO citaBO;
     private final MedicoBO medicoBO;
-    
+
     /**
      * Constructor actualizado con CitaBO y MedicoBO
      */
-    public PacienteMenu(PacienteDTO pacienteDTO, PacienteBO pacienteBO, 
-                        DireccionPacienteBO direccionBO, CitaBO citaBO, 
-                        MedicoBO medicoBO, MenuFrame menuFrame) {
+    public PacienteMenu(PacienteDTO pacienteDTO, PacienteBO pacienteBO,
+            DireccionPacienteBO direccionBO, CitaBO citaBO,
+            MedicoBO medicoBO, MenuFrame menuFrame) {
         this.pacienteDTO = pacienteDTO;
         this.pacienteBO = pacienteBO;
         this.direccionBO = direccionBO;
@@ -59,12 +60,12 @@ public class PacienteMenu extends JFrame {
         initComponents();
         initializeComponents(pacienteDTO);
     }
-    
+
     private void initComponents() {
         this.setTitle("Menú del Paciente");
         this.setSize(400, 300);
         this.setLayout(null);
-        
+
         // Elementos
         lblBienvenido = new JLabel("Bienvenido de vuelta");
         lblNombreCompleto = new JLabel();
@@ -73,7 +74,7 @@ public class PacienteMenu extends JFrame {
         btnVerHistorial = new JButton("Ver Historial");
         btnEditarPerfil = new JButton("Editar Perfil");
         btnRegresar = new JButton("Regresar");
-        
+
         // Posiciones
         lblBienvenido.setBounds(50, 50, 200, 20);
         lblNombreCompleto.setBounds(50, 70, 300, 20);
@@ -82,7 +83,7 @@ public class PacienteMenu extends JFrame {
         btnVerHistorial.setBounds(50, 180, 200, 30);
         btnEditarPerfil.setBounds(50, 220, 200, 30);
         btnRegresar.setBounds(250, 220, 100, 30);
-        
+
         this.add(lblBienvenido);
         this.add(lblNombreCompleto);
         this.add(btnAgendarCita);
@@ -90,7 +91,7 @@ public class PacienteMenu extends JFrame {
         this.add(btnVerHistorial);
         this.add(btnEditarPerfil);
         this.add(btnRegresar);
-        
+
         // Oyentes de Eventos
         btnRegresar.addActionListener(e -> regresarMenu());
         btnEditarPerfil.addActionListener(e -> {
@@ -101,14 +102,14 @@ public class PacienteMenu extends JFrame {
                 Logger.getLogger(PacienteMenu.class.getName()).log(Level.SEVERE, null, ex);
             }
         });
-        
+
         // Añadir listener para btnAgendarCita
         btnAgendarCita.addActionListener(e -> abrirAgendarCita());
-        
+
         // Listener para btnVerHistorial
         btnVerHistorial.addActionListener(e -> mostrarHistorialConsultas());
     }
-    
+
     private void initializeComponents(PacienteDTO pacienteDTO) {
         this.setLocationRelativeTo(null);
         this.setVisible(true);
@@ -116,7 +117,7 @@ public class PacienteMenu extends JFrame {
                 + pacienteDTO.getUsuario().getApellidoP() + " "
                 + pacienteDTO.getUsuario().getApellidoM());
     }
-    
+
     /**
      * Método nuevo para abrir el frame de agendar cita
      */
@@ -126,19 +127,34 @@ public class PacienteMenu extends JFrame {
             new AgendarCita(citaBO, medicoBO, pacienteDTO, this).setVisible(true);
         } catch (Exception ex) {
             Logger.getLogger(PacienteMenu.class.getName()).log(Level.SEVERE, null, ex);
-            JOptionPane.showMessageDialog(this, 
-                    "Error al abrir ventana para agendar cita: " + ex.getMessage(), 
-                    "Error", 
+            JOptionPane.showMessageDialog(this,
+                    "Error al abrir ventana para agendar cita: " + ex.getMessage(),
+                    "Error",
                     JOptionPane.ERROR_MESSAGE);
         }
     }
-    
+
     private void regresarMenu() {
         dispose();
         menuFrame.setVisible(true);
     }
-    
-    // Método para mostrar el historial de consultas
+
+    private void mostrarCitasProximas() {
+        try {
+            // Ocultar este frame y mostrar las citas próximas
+            this.setVisible(false);
+            new CitasProximasPaciente(pacienteDTO, this).setVisible(true);
+        } catch (Exception ex) {
+            Logger.getLogger(PacienteMenu.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(this,
+                    "Error al abrir las citas próximas: " + ex.getMessage(),
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    //
+        // Método para mostrar el historial de consultas
     private void mostrarHistorialConsultas() {
         try {
             // Ocultar este frame y mostrar el historial
@@ -152,4 +168,5 @@ public class PacienteMenu extends JFrame {
                     JOptionPane.ERROR_MESSAGE);
         }
     }
+
 }
