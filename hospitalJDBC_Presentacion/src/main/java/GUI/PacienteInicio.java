@@ -4,9 +4,11 @@
  */
 package GUI;
 
+import BO.CitaBO;
 import BO.PacienteBO;
 import BO.UsuarioBO;
 import BO.DireccionPacienteBO;
+import BO.MedicoBO;
 import Conexion.Conexion;
 import Conexion.IConexion;
 import DTO.PacienteDTO;
@@ -28,18 +30,26 @@ public class PacienteInicio extends JFrame {
     private JButton aceptarButton;
     private JButton regresarButton;
     private JButton registrarButton;
+    
     private final PacienteBO pacienteBO;
     private final UsuarioBO usuarioBO;
     private final DireccionPacienteBO direccionBO;
+    private final CitaBO citaBO;
+    private final MedicoBO medicoBO;
     private final MenuFrame menuFrame;
     
-    
-
-    public PacienteInicio(PacienteBO pacienteBO, MenuFrame menuFrame, DireccionPacienteBO direccionBO, UsuarioBO usuarioBO) {
+    /**
+     * Constructor para inicio de sesión de pacientes
+     */
+    public PacienteInicio(PacienteBO pacienteBO, MenuFrame menuFrame, 
+                         DireccionPacienteBO direccionBO, UsuarioBO usuarioBO,
+                         CitaBO citaBO, MedicoBO medicoBO) {
         this.pacienteBO = pacienteBO;
         this.menuFrame = menuFrame;
         this.direccionBO = direccionBO;
         this.usuarioBO = usuarioBO;
+        this.citaBO = citaBO;
+        this.medicoBO = medicoBO;
         initComponents();
     }
 
@@ -83,8 +93,6 @@ public class PacienteInicio extends JFrame {
         });
     }
 
-
-
     private void autenticarPaciente() {
         String correo = correoField.getText();
         String contraseña = new String(contrasenaField.getPassword());
@@ -95,7 +103,8 @@ public class PacienteInicio extends JFrame {
             if (pacienteDTO != null) {
                 JOptionPane.showMessageDialog(this, "Inicio de sesión exitoso como paciente.");
                 dispose();
-                new PacienteMenu(pacienteDTO, pacienteBO, direccionBO, menuFrame).setVisible(true); 
+                // Actualizado: pasa citaBO y medicoBO al PacienteMenu
+                new PacienteMenu(pacienteDTO, pacienteBO, direccionBO, citaBO, medicoBO, menuFrame).setVisible(true); 
             } else {
                 JOptionPane.showMessageDialog(this, "Credenciales incorrectas.", "Error", JOptionPane.ERROR_MESSAGE);
             }
