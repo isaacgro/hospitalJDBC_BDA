@@ -1,7 +1,9 @@
 GUI\PacienteMenu.class
+GUI\HistorialConsultaPaciente$1.class
 GUI\PacienteInicio.class
 GUI\HistorialConsultaPaciente.class
 GUI\MedicoInicio.class
+GUI\AgendaCitasApp.class
 GUI\MenuFrame.class
 GUI\CitasProximasPaciente.class
 GUI\RegistroPaciente.class
