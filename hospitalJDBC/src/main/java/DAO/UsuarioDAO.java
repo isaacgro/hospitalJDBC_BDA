@@ -97,5 +97,30 @@ public class UsuarioDAO implements IUsuarioDAO {
             throw new PersistenciaExcption("Error al verificar correo: " + e.getMessage(), e);
         }
     }
+    
+    public Usuario obtenerUsuario(int idUsuario) throws PersistenciaExcption {
+    String sql = "SELECT id_Usuario, nombre, apellidoP, apellidoM FROM Usuarios WHERE id_Usuario = ?";
+
+    try (Connection conn = conexion.crearConexion();
+         PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+        stmt.setInt(1, idUsuario);
+
+        try (ResultSet rs = stmt.executeQuery()) {
+            if (rs.next()) {
+                int idUsuarioResult = rs.getInt("id_Usuario");
+                String nombre = rs.getString("nombre");
+                String apellidoP = rs.getString("apellidoP");
+                String apellidoM = rs.getString("apellidoM");
+
+                return new Usuario(idUsuarioResult, "", nombre, apellidoP, apellidoM);
+            } else {
+                throw new PersistenciaExcption("No se encontró el usuario con ID: " + idUsuario);
+            }
+        }
+    } catch (SQLException e) {
+        throw new PersistenciaExcption("Error al obtener el usuario desde la base de datos", e);
+    }
+}
 
 }

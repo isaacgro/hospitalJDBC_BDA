@@ -19,4 +19,6 @@ public interface IUsuarioDAO {
     
     boolean existeCorreo(String correo) throws PersistenciaExcption;
     
+    public Usuario obtenerUsuario (int id_Usuario)throws PersistenciaExcption;
+    
 }

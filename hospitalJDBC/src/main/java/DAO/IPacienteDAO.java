@@ -24,5 +24,7 @@ public interface IPacienteDAO {
     Paciente buscarPacientePorCorreoyContra(String correo, String contraseña) throws PersistenciaExcption;
     
     boolean actualizarPaciente(Paciente paciente) throws PersistenciaExcption;
+    
+    public Paciente obtenerPaciente (int id_Paciente) throws PersistenciaExcption;
 
 }

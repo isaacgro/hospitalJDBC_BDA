@@ -4,6 +4,7 @@
  */
 package DAO;
 
+import Conexion.Conexion;
 import Conexion.IConexion;
 import Entidades.Paciente;
 import Entidades.Usuario;
@@ -13,6 +14,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.LocalDate;
+import DAO.UsuarioDAO;
 
 /**
  *
@@ -21,6 +24,7 @@ import java.sql.Statement;
 public class PacienteDAO implements IPacienteDAO {
 
     private final IConexion conexion;
+    private Usuario usuario;
 
     public PacienteDAO(IConexion conexion) {
         this.conexion = conexion;
@@ -73,7 +77,6 @@ public class PacienteDAO implements IPacienteDAO {
 
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
-                   
 
                     // Crear la entidad Usuario con el orden correcto
                     Usuario usuario = new Usuario(
@@ -84,7 +87,6 @@ public class PacienteDAO implements IPacienteDAO {
                             rs.getString("apellidoM")
                     );
 
-                    
                     // Crear la entidad Paciente con la referencia al Usuario
                     return new Paciente(
                             rs.getInt("id_Paciente"),
@@ -137,4 +139,32 @@ public class PacienteDAO implements IPacienteDAO {
         }
     }
 
+    @Override
+    public Paciente obtenerPaciente(int idPaciente) throws PersistenciaExcption {
+        String sql = "SELECT id_Paciente, fecha_nacimiento, edad, telefono, correoE, id_Usuario FROM Pacientes WHERE id_Paciente = ?";
+
+        try (Connection conn = Conexion.crearConexion(); PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setInt(1, idPaciente);
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    int idPacienteResult = rs.getInt("id_Paciente");
+                    LocalDate fechaNacimiento = rs.getDate("fecha_nacimiento").toLocalDate();
+                    int edad = rs.getInt("edad");
+                    String telefono = rs.getString("telefono");
+                    String correoE = rs.getString("correoE");
+
+                    // Obtener Usuario
+                    Usuario usuario = new UsuarioDAO().obtenerUsuario(rs.getInt("id_Usuario"));
+
+                    return new Paciente(idPacienteResult, fechaNacimiento, edad, telefono, correoE, usuario);
+                } else {
+                    throw new PersistenciaExcption("No se encontró el paciente con ID: " + idPaciente);
+                }
+            }
+        } catch (SQLException e) {
+            throw new PersistenciaExcption("Error al obtener el paciente desde la base de datos", e);
+        }
+    }
 }

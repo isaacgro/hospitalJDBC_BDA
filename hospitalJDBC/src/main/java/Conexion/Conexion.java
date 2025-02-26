@@ -20,7 +20,7 @@ public class Conexion implements IConexion {
     /*Este atributo permite obtener el nombre de usuario de MySQL*/
     final String USER = "root";
     /*Este atributo permite obtener la password de la base de datos*/
-    final String PASS = "Kionis567";
+    final String PASS = "Mario";
 
     /**
      * Este metodo genera una conexion con la base de datos de MySQL

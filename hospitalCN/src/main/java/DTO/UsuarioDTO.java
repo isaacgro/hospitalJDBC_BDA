@@ -16,6 +16,10 @@ public class UsuarioDTO {
     private String apellidoP;
     private String apellidoM;
 
+    public UsuarioDTO() {
+    }
+    
+    
     public UsuarioDTO(int id_Usuario, String contra, String nombre, String apellidoP, String apellidoM) {
         this.id_Usuario = id_Usuario;
         this.contra = contra;
