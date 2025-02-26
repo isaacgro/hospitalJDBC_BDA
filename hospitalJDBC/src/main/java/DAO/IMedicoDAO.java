@@ -14,9 +14,11 @@ import Excepciones.PersistenciaExcption;
  */
 public interface IMedicoDAO {
     
-    boolean autenticarMedico(String cedulaPro, String contra) throws PersistenciaExcption;
+    public boolean autenticarMedico(String cedulaPro, String contra) throws PersistenciaExcption;
     
-    Medico obtenerMedicoPorCedula(String cedulaPro) throws PersistenciaExcption;
+    public Medico obtenerMedicoPorCedula(String cedulaPro) throws PersistenciaExcption;
+    
+   
     
     
     

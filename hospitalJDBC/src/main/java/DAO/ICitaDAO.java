@@ -6,6 +6,7 @@ package DAO;
 
 import Entidades.Cita;
 import Excepciones.PersistenciaExcption;
+import java.util.List;
 
 /**
  *
@@ -24,5 +25,7 @@ public interface ICitaDAO {
      * @throws Excepciones.PersistenciaExcption 
      */
     public boolean registraCitaR(Cita cita) throws PersistenciaExcption;
+    
+    public Cita obtenerCita (int id_Cita) throws PersistenciaExcption;
 
 }

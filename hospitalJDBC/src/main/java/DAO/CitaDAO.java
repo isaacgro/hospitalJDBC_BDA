@@ -2,12 +2,17 @@ package DAO;
 
 import Conexion.IConexion;
 import Entidades.Cita;
+import Entidades.Medico;
+import Entidades.Paciente;
+import Entidades.Usuario;
 import Excepciones.PersistenciaExcption;
+import com.google.protobuf.Timestamp;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.List;
 
 public class CitaDAO implements ICitaDAO {
 
@@ -70,4 +75,36 @@ public class CitaDAO implements ICitaDAO {
 
         return r != 0;
     }
+    
+    @Override
+    public Cita obtenerCita(int id_Cita) throws PersistenciaExcption {
+    String sql = "SELECT id_Cita, estado, fecha_hora, tipo, id_Paciente, id_Medico FROM Citas WHERE id_Cita = ?";
+
+    try (Connection conn = conexion.crearConexion();
+         PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+        stmt.setInt(1, id_Cita); // Asignamos el id de la cita al parámetro de la consulta.
+
+        try (ResultSet rs = stmt.executeQuery()) {
+            if (rs.next()) {
+                int idCitaResult = rs.getInt("id_Cita");
+                String estado = rs.getString("estado");
+                java.sql.Timestamp fechaHora = rs.getTimestamp("fecha_hora");
+                String tipo = rs.getString("tipo");
+
+                // Obtener Paciente
+                Paciente paciente = obtenerPaciente(rs.getInt("id_Paciente"));
+                
+                // Obtener Médico
+                Medico medico = obtenerMedico(rs.getInt("id_Medico"));
+                
+                return new Cita(idCitaResult, estado, fechaHora, paciente, medico, tipo);
+            } else {
+                throw new PersistenciaExcption("No se encontró la cita con ID: " + id_Cita);
+            }
+        }
+    } catch (SQLException e) {
+        throw new PersistenciaExcption("Error al obtener la cita desde la base de datos", e);
+    }
+}
 }
