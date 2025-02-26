@@ -4,7 +4,8 @@
  */
 package DTO;
 
-import java.time.LocalDate;
+import Entidades.Medico;
+import java.time.LocalDateTime;
 
 /**
  *
@@ -13,36 +14,72 @@ import java.time.LocalDate;
 public class ConsultaDTO {
 
     private int id_Consulta;
-    private LocalDate fecha_hora;
+    private LocalDateTime fecha_hora;
     private String tratamiento;
     private String diagnostico;
+    
+     // Agregamos estas propiedades para almacenar los datos del médico asociado
+    // Esto no está en la entidad Consulta, pero lo necesitamos para mostrar en la UI
+    private MedicoDTO medicoAsociado;
+    private PacienteDTO pacienteAsociado;
+    
 
-    public ConsultaDTO(int id_Consulta, LocalDate fecha_hora, String tratamiento, String diagnostico) {
-        this.id_Consulta = id_Consulta;
-        this.fecha_hora = fecha_hora;
-        this.tratamiento = tratamiento;
-        this.diagnostico = diagnostico;
+    public ConsultaDTO() {
     }
+
+    
 
     public int getId_Consulta() {
         return id_Consulta;
     }
 
-    public LocalDate getFecha_hora() {
+    public void setId_Consulta(int id_Consulta) {
+        this.id_Consulta = id_Consulta;
+    }
+
+    public LocalDateTime getFecha_hora() {
         return fecha_hora;
+    }
+
+    public void setFecha_hora(LocalDateTime fecha_hora) {
+        this.fecha_hora = fecha_hora;
     }
 
     public String getTratamiento() {
         return tratamiento;
     }
 
+    public void setTratamiento(String tratamiento) {
+        this.tratamiento = tratamiento;
+    }
+
     public String getDiagnostico() {
         return diagnostico;
     }
 
-    @Override
-    public String toString() {
-        return "ConsultaDTO{" + "id_Consulta=" + id_Consulta + ", fecha_hora=" + fecha_hora + ", tratamiento=" + tratamiento + ", diagnostico=" + diagnostico + '}';
+    public void setDiagnostico(String diagnostico) {
+        this.diagnostico = diagnostico;
     }
 
+    public MedicoDTO getMedicoAsociado() {
+        return medicoAsociado;
+    }
+
+    public void setMedicoAsociado(MedicoDTO medicoAsociado) {
+        this.medicoAsociado = medicoAsociado;
+    }
+
+    public PacienteDTO getPacienteAsociado() {
+        return pacienteAsociado;
+    }
+
+    public void setPacienteAsociado(PacienteDTO pacienteAsociado) {
+        this.pacienteAsociado = pacienteAsociado;
+    }
+
+    @Override
+    public String toString() {
+        return "ConsultaDTO{" + "id_Consulta=" + id_Consulta + ", fecha_hora=" + fecha_hora + ", tratamiento=" + tratamiento + ", diagnostico=" + diagnostico + ", medicoAsociado=" + medicoAsociado + ", pacienteAsociado=" + pacienteAsociado + '}';
+    }
+    
 }

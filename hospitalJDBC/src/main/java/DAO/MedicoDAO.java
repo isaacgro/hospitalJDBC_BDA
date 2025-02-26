@@ -59,7 +59,7 @@ public class MedicoDAO implements IMedicoDAO {
 
             ps.setString(1, cedulaPro);
 
-            try (ResultSet rs = ps.executeQuery()) {
+            try (ResultSet rs = ps.executeQuery()) { // corregir orden aqui 
                 if (rs.next()) {
                     Usuario usuario = new Usuario(
                             rs.getInt("id_Usuario"),

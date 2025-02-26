@@ -5,6 +5,7 @@
 package Entidades;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 /**
  *Clase que referencia a la entidad consultas de la base de datos
@@ -12,21 +13,18 @@ import java.time.LocalDate;
  */
 public class Consulta {
     private int id_Consulta;
-    private LocalDate fecha_hora;
+    private LocalDateTime fecha_hora;
     private String tratamiento;
     private String diagnostico;
 
-    public Consulta() {
-    }
-
-    public Consulta(int id_Consulta, LocalDate fecha_hora, String tratamiento, String diagnostico) {
+    public Consulta(int id_Consulta, LocalDateTime fecha_hora, String tratamiento, String diagnostico) {
         this.id_Consulta = id_Consulta;
         this.fecha_hora = fecha_hora;
         this.tratamiento = tratamiento;
         this.diagnostico = diagnostico;
     }
 
-    public Consulta(LocalDate fecha_hora, String tratamiento, String diagnostico) {
+    public Consulta(LocalDateTime fecha_hora, String tratamiento, String diagnostico) {
         this.fecha_hora = fecha_hora;
         this.tratamiento = tratamiento;
         this.diagnostico = diagnostico;
@@ -40,11 +38,11 @@ public class Consulta {
         this.id_Consulta = id_Consulta;
     }
 
-    public LocalDate getFecha_hora() {
+    public LocalDateTime getFecha_hora() {
         return fecha_hora;
     }
 
-    public void setFecha_hora(LocalDate fecha_hora) {
+    public void setFecha_hora(LocalDateTime fecha_hora) {
         this.fecha_hora = fecha_hora;
     }
 
@@ -63,11 +61,16 @@ public class Consulta {
     public void setDiagnostico(String diagnostico) {
         this.diagnostico = diagnostico;
     }
+    
+
+    public Consulta() {
+    }
 
     @Override
     public String toString() {
         return "Consulta{" + "id_Consulta=" + id_Consulta + ", fecha_hora=" + fecha_hora + ", tratamiento=" + tratamiento + ", diagnostico=" + diagnostico + '}';
     }
+
     
     
 }

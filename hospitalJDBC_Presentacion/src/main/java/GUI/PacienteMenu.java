@@ -4,8 +4,10 @@
  */
 package GUI;
 
+import BO.ConsultaBO;
 import BO.DireccionPacienteBO;
 import BO.PacienteBO;
+import Conexion.Conexion;
 import DTO.PacienteDTO;
 import Exception.NegocioException;
 import java.awt.event.ActionEvent;
@@ -22,7 +24,6 @@ import javax.swing.JOptionPane;
  * @author isaac
  */
 public class PacienteMenu extends JFrame {
-
     private JLabel lblBienvenido;
     private JLabel lblNombreCompleto;
     private JButton btnAgendarCita;
@@ -34,7 +35,7 @@ public class PacienteMenu extends JFrame {
     private final PacienteBO pacienteBO;
     private final DireccionPacienteBO direccionBO;
     private final PacienteDTO pacienteDTO;
-
+    
     public PacienteMenu(PacienteDTO pacienteDTO, PacienteBO pacienteBO, DireccionPacienteBO direccionBO, MenuFrame menuFrame) {
         this.pacienteDTO = pacienteDTO;
         this.pacienteBO = pacienteBO;
@@ -43,12 +44,12 @@ public class PacienteMenu extends JFrame {
         initComponents();
         initializeComponents(pacienteDTO);
     }
-
+    
     private void initComponents() {
         this.setTitle("Menú del Paciente");
         this.setSize(400, 300);
         this.setLayout(null);
-
+        
         // Elementos
         lblBienvenido = new JLabel("Bienvenido de vuelta");
         lblNombreCompleto = new JLabel();
@@ -57,7 +58,7 @@ public class PacienteMenu extends JFrame {
         btnVerHistorial = new JButton("Ver Historial");
         btnEditarPerfil = new JButton("Editar Perfil");
         btnRegresar = new JButton("Regresar");
-
+        
         // Posiciones
         lblBienvenido.setBounds(50, 50, 200, 20);
         lblNombreCompleto.setBounds(50, 70, 300, 20);
@@ -66,7 +67,7 @@ public class PacienteMenu extends JFrame {
         btnVerHistorial.setBounds(50, 180, 200, 30);
         btnEditarPerfil.setBounds(50, 220, 200, 30);
         btnRegresar.setBounds(250, 220, 100, 30);
-
+        
         this.add(lblBienvenido);
         this.add(lblNombreCompleto);
         this.add(btnAgendarCita);
@@ -74,10 +75,9 @@ public class PacienteMenu extends JFrame {
         this.add(btnVerHistorial);
         this.add(btnEditarPerfil);
         this.add(btnRegresar);
-
+        
         // Oyentes de Eventos
         btnRegresar.addActionListener(e -> regresarMenu());
-
         btnEditarPerfil.addActionListener(e -> {
             dispose();
             try {
@@ -86,21 +86,37 @@ public class PacienteMenu extends JFrame {
                 Logger.getLogger(PacienteMenu.class.getName()).log(Level.SEVERE, null, ex);
             }
         });
+        
+        // Agrega aquí el ActionListener para btnVerHistorial
+        btnVerHistorial.addActionListener(e -> mostrarHistorialConsultas());
     }
-
+    
     private void initializeComponents(PacienteDTO pacienteDTO) {
         this.setLocationRelativeTo(null);
         this.setVisible(true);
-
-
         
         lblNombreCompleto.setText(pacienteDTO.getUsuario().getNombre() + " "
                 + pacienteDTO.getUsuario().getApellidoP() + " "
                 + pacienteDTO.getUsuario().getApellidoM());
     }
-
+    
     private void regresarMenu() {
         dispose();
         menuFrame.setVisible(true);
+    }
+    
+    // Método para mostrar el historial de consultas
+    private void mostrarHistorialConsultas() {
+        try {
+            // Ocultar este frame y mostrar el historial
+            this.setVisible(false);
+            new HistorialConsultaPaciente(pacienteDTO, this).setVisible(true);
+        } catch (Exception ex) {
+            Logger.getLogger(PacienteMenu.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(this, 
+                    "Error al abrir el historial de consultas: " + ex.getMessage(), 
+                    "Error", 
+                    JOptionPane.ERROR_MESSAGE);
+        }
     }
 }

@@ -6,6 +6,8 @@ package Mapper;
 
 import DTO.*;
 import Entidades.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -105,8 +107,6 @@ public class Mapper {
             return null;
         }
 
-        
-
         // mismo orden 
         UsuarioDTO dto = new UsuarioDTO(
                 usuario.getId_Usuario(),
@@ -115,15 +115,6 @@ public class Mapper {
                 usuario.getApellidoP(),
                 usuario.getApellidoM()
         );
-
-        // Depuración para confirmar
-        System.out.println("=== UsuarioDTO creado ===");
-        System.out.println("ID: " + dto.getId_Usuario());
-        System.out.println("Nombre: " + dto.getNombre());
-        System.out.println("ApellidoP: " + dto.getApellidoP());
-        System.out.println("ApellidoM: " + dto.getApellidoM());
-        System.out.println("Contra: " + dto.getContra());
-        System.out.println("================================");
 
         return dto;
     }
@@ -157,17 +148,20 @@ public class Mapper {
     }
 
     public static ConsultaDTO toDTO(Consulta consulta) {
-        if (consulta == null) {
-            return null;
-        }
-
-        return new ConsultaDTO(
-                consulta.getId_Consulta(),
-                consulta.getFecha_hora(),
-                consulta.getTratamiento(),
-                consulta.getDiagnostico()
-        );
+    if (consulta == null) {
+        return null;
     }
+    
+    // Usar el constructor vacío y luego establecer los valores
+    ConsultaDTO dto = new ConsultaDTO();
+    dto.setId_Consulta(consulta.getId_Consulta());
+    dto.setFecha_hora(consulta.getFecha_hora());
+    dto.setTratamiento(consulta.getTratamiento());
+    dto.setDiagnostico(consulta.getDiagnostico());
+    
+    // No asignamos médico ni paciente aquí
+    return dto;
+}
 
     public static Consulta toEntity(ConsultaDTO consultaDTO) {
         if (consultaDTO == null) {
@@ -180,6 +174,19 @@ public class Mapper {
                 consultaDTO.getTratamiento(),
                 consultaDTO.getDiagnostico()
         );
+    }
+
+    public static List<ConsultaDTO> toListDTO(List<Consulta> consultas) {
+        if (consultas == null) {
+            return null;
+        }
+
+        List<ConsultaDTO> consultasDTO = new ArrayList<>();
+        for (Consulta consulta : consultas) {
+            consultasDTO.add(toDTO(consulta));
+        }
+
+        return consultasDTO;
     }
 
     public static DireccionPaciente toEntity(DireccionPacienteDTO direccionDTO) {
