@@ -1,5 +1,6 @@
 package GUI;
 
+import BO.CitaBO;
 import BO.DireccionPacienteBO;
 import BO.MedicoBO;
 import BO.PacienteBO;
@@ -26,12 +27,14 @@ public class MenuFrame extends JFrame {
     private final PacienteBO pacienteBO;
     private final UsuarioBO usuarioBO;
     private final DireccionPacienteBO direccionBO;
+    private final CitaBO citaBO;
 
     public MenuFrame(IConexion conexion) {
         this.medicoBO = new MedicoBO(conexion);
         this.pacienteBO = new PacienteBO(conexion);
         this.usuarioBO = new UsuarioBO(conexion);
         this.direccionBO = new DireccionPacienteBO(conexion);
+        this.citaBO = new CitaBO(conexion);
         initComponents();
         initializeComponents();
     }
@@ -72,7 +75,7 @@ public class MenuFrame extends JFrame {
 
     private void mostrarFramePaciente() {
         this.dispose();
-        new PacienteInicio(pacienteBO, this, direccionBO, usuarioBO ).setVisible(true);
+        new PacienteInicio(pacienteBO, this, direccionBO, usuarioBO, citaBO, medicoBO ).setVisible(true);
     }
 
     public static void main(String[] args) {

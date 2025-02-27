@@ -26,9 +26,11 @@ public class MedicoMenu extends JFrame {
     private JButton btnAgendaCitas;
     private JButton btnHistorialCitas;
     private JButton btnCerrarSesion;
+    private final MedicoDTO medicoDTO;
     private final MenuFrame menuFrame;
 
     public MedicoMenu(MedicoDTO medicoDTO, MenuFrame menuFrame) {
+        this.medicoDTO = medicoDTO;
         this.menuFrame = menuFrame;
         initComponents();
         initializeComponents(medicoDTO);
@@ -58,8 +60,45 @@ public class MedicoMenu extends JFrame {
 
         // Listeners
         btnCerrarSesion.addActionListener(e -> cerrarSesion());
+
+        // Agregar listeners para los nuevos botones
+        btnAgendaCitas.addActionListener(e -> abrirAgendaCitas());
+        btnHistorialCitas.addActionListener(e -> abrirHistorialCitas());
     }
 
+// Método para abrir Agenda de Citas
+    private void abrirAgendaCitas() {
+        try {
+
+            int idMedicoActual = medicoDTO.getId_Medico();
+            new AgendaCitasApp(medicoDTO.getId_Medico()).createAndShowGUI();
+        } catch (Exception ex) {
+            LOGGER.log(Level.SEVERE, "Error al abrir Agenda de Citas", ex);
+            JOptionPane.showMessageDialog(this,
+                    "Error al abrir Agenda de Citas: " + ex.getMessage(),
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+// Método para abrir Historial de Citas 
+    private void abrirHistorialCitas() {
+        try {
+            // Ocultar el frame actual
+            this.setVisible(false);
+
+            // Abrir el frame de Historial de Citas del Médico
+            new HistorialCitasMedico(medicoDTO, this).setVisible(true);
+        } catch (Exception ex) {
+            LOGGER.log(Level.SEVERE, "Error al abrir Historial de Citas", ex);
+            JOptionPane.showMessageDialog(this,
+                    "Error al abrir Historial de Citas: " + ex.getMessage(),
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    // Metodo para abrir el histiral de citas
     private void initializeComponents(MedicoDTO medicoDTO) {
         this.setLocationRelativeTo(null);
         if (medicoDTO.getUsuario() != null) {

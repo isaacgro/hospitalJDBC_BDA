@@ -95,6 +95,8 @@ public class PacienteMenu extends JFrame {
         // Oyentes de Eventos
         btnRegresar.addActionListener(e -> regresarMenu());
         btnEditarPerfil.addActionListener(e -> {
+        
+
             dispose();
             try {
                 new EditarPerfilPaciente(pacienteBO, direccionBO, pacienteDTO, menuFrame).setVisible(true);
@@ -108,6 +110,8 @@ public class PacienteMenu extends JFrame {
 
         // Listener para btnVerHistorial
         btnVerHistorial.addActionListener(e -> mostrarHistorialConsultas());
+        
+        btnVerCitas.addActionListener(e -> mostrarCitasProximas());
     }
 
     private void initializeComponents(PacienteDTO pacienteDTO) {
@@ -138,10 +142,10 @@ public class PacienteMenu extends JFrame {
         dispose();
         menuFrame.setVisible(true);
     }
-
+    // metodo mostrar citas prox
     private void mostrarCitasProximas() {
         try {
-            // Ocultar este frame y mostrar las citas próximas
+            
             this.setVisible(false);
             new CitasProximasPaciente(pacienteDTO, this).setVisible(true);
         } catch (Exception ex) {
@@ -151,10 +155,13 @@ public class PacienteMenu extends JFrame {
                     "Error",
                     JOptionPane.ERROR_MESSAGE);
         }
+          
+
+
     }
 
-    //
-        // Método para mostrar el historial de consultas
+    
+    // Método para mostrar el historial de consultas
     private void mostrarHistorialConsultas() {
         try {
             // Ocultar este frame y mostrar el historial

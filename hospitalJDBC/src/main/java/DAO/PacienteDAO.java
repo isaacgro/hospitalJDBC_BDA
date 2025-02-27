@@ -143,7 +143,8 @@ public class PacienteDAO implements IPacienteDAO {
     public Paciente obtenerPaciente(int idPaciente) throws PersistenciaExcption {
         String sql = "SELECT id_Paciente, fecha_nacimiento, edad, telefono, correoE, id_Usuario FROM Pacientes WHERE id_Paciente = ?";
 
-        try (Connection conn = Conexion.crearConexion(); PreparedStatement stmt = conn.prepareStatement(sql)) {
+        Conexion conexion = new Conexion();
+        try (Connection conn = conexion.crearConexion(); PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setInt(1, idPaciente);
 
@@ -156,7 +157,8 @@ public class PacienteDAO implements IPacienteDAO {
                     String correoE = rs.getString("correoE");
 
                     // Obtener Usuario
-                    Usuario usuario = new UsuarioDAO().obtenerUsuario(rs.getInt("id_Usuario"));
+                    UsuarioDAO usuarioDAO = new UsuarioDAO(conexion); // instancia del usuario
+                    Usuario usuario = usuarioDAO.obtenerUsuario(rs.getInt("id_Usuario"));
 
                     return new Paciente(idPacienteResult, fechaNacimiento, edad, telefono, correoE, usuario);
                 } else {

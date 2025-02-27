@@ -29,5 +29,7 @@ public interface ICitaDAO {
     public List<Cita> obtenerCitasPendientesPorPaciente(int idPaciente) throws PersistenciaExcption;
     
      public boolean actualizarEstadoCita(Cita cita) throws PersistenciaExcption;
+     
+     public List<Cita> obtenerCitasPorMedico(int idMedico) throws PersistenciaExcption;
 
 }

@@ -3,6 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package GUI;
+
 import javax.swing.*;
 import java.awt.*;
 import java.time.format.DateTimeFormatter;
@@ -17,9 +18,10 @@ import DTO.UsuarioDTO;
 import Excepciones.PersistenciaExcption;
 
 public class AgendaCitasApp {
+
     private final CitaBO citaBO;
-    private final int idMedicoActual; // ID del médico en sesión
-    
+    private final int idMedicoActual; 
+
     public AgendaCitasApp(int idMedicoActual) {
         this.citaBO = new CitaBO(new Conexion());
         this.idMedicoActual = idMedicoActual;
@@ -30,7 +32,7 @@ public class AgendaCitasApp {
         SwingUtilities.invokeLater(() -> new AgendaCitasApp(idMedico).createAndShowGUI());
     }
 
-    private void createAndShowGUI() {
+    public void createAndShowGUI() {
         JFrame frame = new JFrame("Agenda de Citas");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(400, 400);
@@ -86,28 +88,38 @@ public class AgendaCitasApp {
         panel.add(new JLabel(text));
         return panel;
     }
-    
+
     private List<CitaDTO> obtenerCitasDesdeBD() {
         List<CitaDTO> citas = new ArrayList<>();
         try {
             Connection conn = new Conexion().crearConexion();
-            PreparedStatement stmt = conn.prepareStatement("SELECT id_Cita, estado, fecha_hora, id_Paciente, tipo FROM Citas WHERE id_Medico = ?");
+            PreparedStatement stmt = conn.prepareStatement(
+                    "SELECT id_Cita, estado, fecha_hora, id_Paciente, tipo FROM Citas WHERE id_Medico = ?"
+            );
             stmt.setInt(1, idMedicoActual);
             ResultSet rs = stmt.executeQuery();
-            
+
             while (rs.next()) {
                 UsuarioDTO usuario = obtenerUsuarioDesdeBD(rs.getInt("id_Paciente"));
-                PacienteDTO paciente = new PacienteDTO(rs.getInt("id_Paciente"), null, 0, "", "", usuario);
-                CitaDTO cita = new CitaDTO(
-                    rs.getInt("id_Cita"),
-                    rs.getString("estado"),
-                    rs.getTimestamp("fecha_hora"),
-                    paciente,
-                    rs.getString("tipo")
+                PacienteDTO paciente = new PacienteDTO(
+                        rs.getInt("id_Paciente"),
+                        null,
+                        0,
+                        "",
+                        "",
+                        usuario
                 );
+
+                CitaDTO cita = new CitaDTO();
+                cita.setId_Cita(rs.getInt("id_Cita")); // Cambio aquí
+                cita.setEstado(rs.getString("estado"));
+                cita.setFecha_hora(rs.getTimestamp("fecha_hora"));
+                cita.setPaciente(paciente);
+                cita.setTipo(rs.getString("tipo"));
+
                 citas.add(cita);
             }
-            
+
             rs.close();
             stmt.close();
             conn.close();
@@ -116,35 +128,43 @@ public class AgendaCitasApp {
         }
         return citas;
     }
-    
-    private UsuarioDTO obtenerUsuarioDesdeBD(int idPaciente) {
+
+    private UsuarioDTO obtenerUsuarioDesdeBD(int idPaciente) throws PersistenciaExcption {
         try {
             Connection conn = new Conexion().crearConexion();
-            PreparedStatement stmt = conn.prepareStatement("SELECT nombre FROM Usuarios WHERE id_Usuario = ?");
+            PreparedStatement stmt = conn.prepareStatement(
+                    "SELECT u.id_Usuario, u.nombre, u.apellidoP, u.apellidoM "
+                    + "FROM usuarios u "
+                    + "JOIN pacientes p ON u.id_Usuario = p.id_Usuario "
+                    + "WHERE p.id_Paciente = ?"
+            );
             stmt.setInt(1, idPaciente);
             ResultSet rs = stmt.executeQuery();
+
             if (rs.next()) {
-                return new UsuarioDTO(rs.getString("nombre"));
+                UsuarioDTO usuario = new UsuarioDTO(
+                        rs.getInt("id_Usuario"),
+                        "", // contra vacía si no la necesitas
+                        rs.getString("nombre"),
+                        rs.getString("apellidoP"),
+                        rs.getString("apellidoM")
+                );
+
+                rs.close();
+                stmt.close();
+                conn.close();
+
+                return usuario;
             }
+
             rs.close();
             stmt.close();
             conn.close();
         } catch (SQLException e) {
             e.printStackTrace();
+            throw new PersistenciaExcption("Error al obtener usuario", e);
         }
-        return new UsuarioDTO();
+
+        throw new PersistenciaExcption("Usuario no encontrado");
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-    
-
